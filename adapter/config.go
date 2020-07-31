@@ -1,7 +1,6 @@
 package adapter
 
 import (
-	"os/exec"
 	"path"
 
 	"github.com/sirupsen/logrus"
@@ -12,14 +11,10 @@ import (
 
 var log = logrus.New()
 
-const SAVE_PATH = "~/maplejava/output/"
-const ConfigFilePath = "/Users/huawei/Test/"
+const SAVE_PATH = "maplejava/output/"
+const ConfigFilePath = "MobilePerf/"
 
 func ModifySavePath(apkName string) {
-	if err := modifyConfigSuffix(); err != nil {
-		log.Error(err)
-		return
-	}
 
 	v, err := getViperPoint()
 	if err != nil {
@@ -27,7 +22,8 @@ func ModifySavePath(apkName string) {
 		return
 	}
 
-	outPutPath := path.Join(SAVE_PATH, apkName)
+	userPath, _ := utils.Home()
+	outPutPath := path.Join(userPath,SAVE_PATH, apkName)
 	v.Set("save_path", outPutPath)
 	if err := v.WriteConfig(); err != nil {
 		log.Error(err)
@@ -39,54 +35,25 @@ func ModifySavePath(apkName string) {
 		log.Error(err)
 		return
 	}
-
-	if err := recoverConfigSuffix(); err != nil {
-		log.Error(err)
-	}
 }
 
 func ModifyPackage(pkgName string) {
-	if err := modifyConfigSuffix(); err != nil {
-		log.Error(err)
-		return
-	}
-
 	v, err := getViperPoint()
 	if err != nil {
 		log.Error("err: get viper point failed")
 		return
 	}
 
-	pkgPath := path.Join(SAVE_PATH, pkgName)
-	v.Set("package", pkgPath)
+	v.Set("package", pkgName)
 	if err := v.WriteConfig(); err != nil {
 		log.Error(err)
 	}
-
-	if err := recoverConfigSuffix(); err != nil {
-		log.Error(err)
-	}
-}
-
-func modifyConfigSuffix() error {
-	cmd := exec.Command(
-		"mv",
-		path.Join(ConfigFilePath, "config.conf"),
-		path.Join(ConfigFilePath, "config"))
-	return cmd.Run()
-}
-
-func recoverConfigSuffix() error {
-	cmd := exec.Command(
-		"mv",
-		path.Join(ConfigFilePath, "config"),
-		path.Join(ConfigFilePath, "config.conf"))
-	return cmd.Run()
 }
 
 func getViperPoint() (*viper.Viper, error) {
 	v := viper.New()
-	v.SetConfigFile(path.Join(ConfigFilePath, "config"))
+	userPath, _ := utils.Home()
+	v.SetConfigFile(path.Join(userPath, ConfigFilePath, "config"))
 	v.SetConfigType("properties")
 
 	err := v.ReadInConfig()
