@@ -1,0 +1,19 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "bGBlE9RQX6hqPrlbo2ec8n7eJ/I=",
+			"path": "github.com/spf13/viper",
+			"revision": "13494e8047bb3f4c39087dfce593dfc3a5d02260",
+			"revisionTime": "2020-05-21T06:55:41Z"
+		},
+		{
+			"checksumSHA1": "xDhWoc3cxcrbTa3wmWw4YbUnfPQ=",
+			"path": "github.com/urfave/cli",
+			"revision": "d2d2098085cee084bc50ae293acf8568cfb348e6",
+			"revisionTime": "2020-07-12T13:32:01Z"
+		}
+	],
+	"rootPath": "ConfigAdapter"
+}
